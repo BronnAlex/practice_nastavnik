@@ -1,43 +1,39 @@
-import os
 import re
-from data.mypath import base_path
-
-full_path = os.path.join(base_path, "names.txt")
-with open(full_path, "r", encoding="utf-8") as file:
-    content = file.read()
+import os
+#from data.mypath import base_path
 
 
-def func_names(names):
-
-    list_1 = []
-    pattern = r"\s+"  # шаблон для разделения по пробелам
-    words = re.split(pattern, names)
-    for item in words:
-        if "." in item:
-            word = item.replace(".", "")
-            list_1.append(word)
-
-        elif "," in item:
-            word = item.replace(",", "")
-            list_1.append(word)
-
-        elif "!" in item:
-            word = item.replace("!", "")
-            list_1.append(word)
-
-        elif item.isdigit():
-            continue
-
-        elif item:
-            list_1.append(item)
-
-        else:
-            del item
-    for i in list_1:
-        if i == "":
-            list_1.remove(i)
-    return list_1
+def clear_name(file_name: str) -> list:
+    """Функция для очистки имен от лишних символов"""
+    #full_path = os.path.join(base_path + '\\')
+    new_name_list = list()
+    with open('C:\\Users\\AlexBronn\\PycharmProjects\\practika_nastavnik\\data\\' + file_name, 'r', encoding='utf-8') as names_file:
+        names_list = names_file.read().split()
+        for name_item in names_list:
+            new_name = ''
+            for symbol in name_item:
+                if symbol.isalpha():
+                    new_name += symbol
+            if new_name.isalpha():
+                new_name_list.append(new_name)
+    return new_name_list
 
 
-result = func_names(content)
-print(result)
+def is_cyrilic(name_item: str) -> bool:
+    """Проверка на вхождение кирилицы в строку"""
+
+    return bool(re.search('[а-яА-Я]', name_item))
+
+
+def filter_russ(names_list: list) -> list:
+    """Фильрация русских имен0"""
+    new_names_list = list()
+    for name_item in names_list:
+        if is_cyrilic(name_item):
+            new_names_list.append(name_item)
+    return new_names_list
+
+if __name__ == '__main__':
+    cleared_name = clear_name('names.txt')
+
+    print(filter_russ(cleared_name))
