@@ -33,11 +33,21 @@ def filter_russ(names_list: list) -> list:
             new_names_list.append(name_item)
     return new_names_list
 
+def filter_england(names_list: list) -> list:
+    """Фильрация фтглийских имен"""
+    new_names_list = list()
+    for name_item in names_list:
+        if not is_cyrilic(name_item):
+            new_names_list.append(name_item)
+    return new_names_list
+
 
 def save_to_file(file_name: str, data: str) -> None:
     """Сохраняет данные в файл"""
     with open('C:\\Users\\AlexBronn\\PycharmProjects\\practika_nastavnik\\data\\' + file_name, 'w', encoding='utf-8') as names_file:
         names_file.write(data)
+
+
 
 
 if __name__ == '__main__':
@@ -46,5 +56,11 @@ if __name__ == '__main__':
     filtered_names = (filter_russ(cleared_name))
     save_to_file(
         'russian.txt',
+        '\n'.join(filtered_names)
+    )
+
+    filtered_names = (filter_england(cleared_name))
+    save_to_file(
+        'england.txt',
         '\n'.join(filtered_names)
     )
